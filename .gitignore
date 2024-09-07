@@ -27,6 +27,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
@@ -38,3 +39,19 @@ next-env.d.ts
 # wrangler files
 .wrangler
 .dev.vars
+
+# lang-card specific
+/lang-card/.env
+/lang-card-backend/.env
+
+# Python-specific
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+.venv/
+
+# IDE-specific
+.vscode/
+.idea/
