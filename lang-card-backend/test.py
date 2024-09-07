@@ -67,7 +67,6 @@ def export_anki(flashcards, output_dir="."):
     # Join all formatted flashcards into a single string
     export_content = "\n".join(formatted_flashcards)
 
-    # Create a file name with timestamp
     file_name = f"flashcards_{int(time.time())}.txt"
     file_path = f"{output_dir}/{file_name}"
 
