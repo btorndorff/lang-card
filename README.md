@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/a663f464-d812-4351-8b8a-5892b05fcbab)# Lang Card
+# Lang Card
 
 Try it here -> https://lang-card.pages.dev
 
@@ -17,7 +17,7 @@ Lang Card is a language learning tool that generates custom flashcards from eith
 
 ### Video Demo
 
-https://res.cloudinary.com/dcdfuucla/video/upload/v1724911203/dev-portfolio/rprhwkcpiiayosofbqsr.mov 
+Coming soon ...
 
 ---
 
