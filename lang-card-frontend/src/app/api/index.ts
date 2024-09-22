@@ -16,8 +16,8 @@ interface GenerateFlashcardsResponse {
   flashcards: Flashcard[];
 }
 
-const apiBase = "https://borff.pythonanywhere.com";
-// const apiBase = "http://127.0.0.1:5000";
+// const apiBase = "https://borff.pythonanywhere.com";
+const apiBase = "http://127.0.0.1:5000";
 
 export const generateFlashcards = async (
   data: GenerateFlashcardsData

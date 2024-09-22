@@ -5,9 +5,10 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from utils.transcription import transcribe_audio
 from utils.gpt import generate_flashcards
-from utils.tts import generate_speech
+from utils.tts import add_audio_to_flashcards
 import io
 import time
+import json
 
 
 app = Flask(__name__)
@@ -22,23 +23,6 @@ logger = logging.getLogger(__name__)
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-def add_audio(flashcards):
-    for flashcard in flashcards["flashcards"]:
-        front_text = flashcard["front"]["primary"]
-        if flashcard["front"]["secondary"]:
-            front_text += ". " + flashcard["front"]["secondary"]
-        front_audio = generate_speech(front_text)
-        flashcard["front"]["audio"] = front_audio
-
-        back_text = flashcard["back"]["primary"]
-        if flashcard["back"]["secondary"]:
-            back_text += ". " + flashcard["back"]["secondary"]
-        back_audio = generate_speech(back_text)
-        flashcard["back"]["audio"] = back_audio
-
-    return flashcards
 
 
 @app.route("/generate_flashcards", methods=["POST"])
@@ -101,7 +85,10 @@ def generate_flashcards_endpoint():
             return jsonify({"error": str(e)}), 500
 
     if audio_toggle:
-        flashcards = add_audio(flashcards)
+        flashcard_format_dict = json.loads(flashcard_format)
+        flashcards = add_audio_to_flashcards(
+            flashcards, learning_language, flashcard_format_dict
+        )
 
     return jsonify(flashcards), 200
 
@@ -111,12 +98,13 @@ def export_anki():
     flashcards = request.json.get("flashcards")
 
     if flashcards:
-        active_flashcards = [fc for fc in flashcards if fc.get("active")]
+        # active_flashcards = [fc for fc in flashcards if fc.get("active")]
 
         formatted_flashcards = []
         for fc in flashcards:
             front_primary = fc["front"].get("primary")
             front_secondary = fc["front"].get("secondary")
+            front_audio = fc["front"].get("audio")
             front_content_parts = []
             if front_primary:
                 front_content_parts.append(
@@ -124,6 +112,11 @@ def export_anki():
                 )
             if front_secondary:
                 front_content_parts.append(f"<br><br>{front_secondary}")
+            if front_audio:
+                front_content_parts.append(
+                    f"<br><button onclick=\"document.getElementById('audio_{fc['front']['primary']}_front').play()\">Play Audio</button>"
+                    f"<audio id='audio_{fc['front']['primary']}_front' autoplay><source src='data:audio/mp3;base64,{front_audio}' type='audio/mp3'></audio>"
+                )
             if front_content_parts:
                 front_content = f"<div style='text-align:center;'>{''.join(front_content_parts)}</div>"
             else:
@@ -143,7 +136,7 @@ def export_anki():
             if back_audio:
                 back_content_parts.append(
                     f"<br><button onclick=\"document.getElementById('audio_{fc['front']['primary']}').play()\">Play Audio</button>"
-                    f"<audio id='audio_{fc['front']['primary']}' autoplay><source src='data:audio/mp3;base64,{back_audio}' type='audio/mp3'></audio>"
+                    f"<audio id='audio_{fc['front']['primary']}'><source src='data:audio/mp3;base64,{back_audio}' type='audio/mp3'></audio>"
                 )
             if back_content_parts:
                 back_content = f"<div style='text-align:center;'>{''.join(back_content_parts)}</div>"

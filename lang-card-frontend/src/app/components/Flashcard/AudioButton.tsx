@@ -33,7 +33,8 @@ const AudioButton = ({
   audioData?: string;
   color?: string;
 }) => {
-  const playAudio = () => {
+  const playAudio = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     if (audioData) {
       const audio = new Audio(`data:audio/mp3;base64,${audioData}`);
       audio.play();

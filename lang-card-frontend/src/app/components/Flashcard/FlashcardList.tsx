@@ -1,6 +1,8 @@
-import { Flashcard } from "../../constants/Flashcard";
+import { Flashcard as FlashcardType } from "../../constants/Flashcard";
 import { exportFlashcards as exportFlashcardsAPI } from "../../api";
 import FlashcardItem from "./FlashcardItem";
+import Flashcard from "./Flashcard";
+import FlashcardDisplay from "./FlashcardDisplay";
 
 const FlashcardList = ({
   flashcards,
@@ -9,33 +11,12 @@ const FlashcardList = ({
   onToggleActive,
   handleReset,
 }: {
-  flashcards: Flashcard[] | undefined | null;
+  flashcards: FlashcardType[] | undefined | null;
   error: string | null;
   loading: boolean;
   onToggleActive: (index: number) => void;
   handleReset: () => void;
 }): React.ReactElement | null => {
-  // const copyAllToClipboard = () => {
-  //   if (flashcards) {
-  //     const flashcardsText = flashcards
-  //       .map(
-  //         (fc) =>
-  //           `${fc.front.primary} ${
-  //             fc.front.secondary ? fc.front.secondary : ""
-  //           }: ${fc.back.primary} ${fc.back.secondary ? fc.back.secondary : ""}`
-  //       )
-  //       .join("\n");
-  //     navigator.clipboard.writeText(flashcardsText).then(
-  //       () => {
-  //         alert("All flashcards copied to clipboard!");
-  //       },
-  //       (err) => {
-  //         console.error("Failed to copy text: ", err);
-  //       }
-  //     );
-  //   }
-  // };
-
   const exportFlashcards = async () => {
     if (flashcards) {
       const activeFlashcards = flashcards.filter((fc) => fc.active);
@@ -79,13 +60,8 @@ const FlashcardList = ({
 
   return (
     <div className="flex flex-col items-center py-5 w-full">
-      <div className="flex flex-col gap-3 py-3 w-[80%]">
-        {/* <button
-          onClick={copyAllToClipboard}
-          className="px-4 py-2 font-semibold border border-secondary-red text-secondary-red hover:bg-secondary-red rounded-[25px] hover:text-white mt-3 w-[100px]"
-        >
-          Copy All
-        </button> */}
+      <div className="flex flex-col gap-3 py-3 w-[80%] items-center">
+        <FlashcardDisplay flashcards={flashcards} />
         <ul className="space-y-3 w-full flex flex-col items-center">
           {flashcards?.map((flashcard, index) => (
             <FlashcardItem
