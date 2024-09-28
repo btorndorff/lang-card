@@ -357,7 +357,7 @@ const FlashcardFormat = ({
             </div>
           </div>
 
-          {/* <div>
+          <div>
             <p className="text-primary-grey">Audio</p>
             <div className="flex ">
               <label className="flex items-center cursor-pointer">
@@ -399,7 +399,7 @@ const FlashcardFormat = ({
                 </span>
               </label>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </div>

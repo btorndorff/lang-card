@@ -89,7 +89,6 @@ def generate_flashcards_endpoint():
         flashcards = add_audio_to_flashcards(
             flashcards, learning_language, flashcard_format_dict
         )
-
     return jsonify(flashcards), 200
 
 
