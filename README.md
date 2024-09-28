@@ -17,7 +17,11 @@ Lang Card is a language learning tool that generates custom flashcards from eith
 
 ### Video Demo
 
-Coming soon ...
+
+
+https://github.com/user-attachments/assets/ed0a1170-3833-4957-a144-822da7a24514
+
+
 
 ---
 
