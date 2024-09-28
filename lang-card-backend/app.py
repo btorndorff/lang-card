@@ -37,8 +37,8 @@ def generate_flashcards_endpoint():
 
     audio_toggle = audio_toggle == "true"
 
-    if "audioFile" in request.files:
-        audio_file = request.files["audioFile"]
+    if "audio_file" in request.files:
+        audio_file = request.files["audio_file"]
         if audio_file.filename == "":
             return jsonify({"error": "No selected file"}), 400
 
