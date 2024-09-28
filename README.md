@@ -23,8 +23,6 @@ Coming soon ...
 
 ### Tech Stack
 
-- **Frontend**: Next.js
-- **Backend**: Flask
+- **Frontend**: Next.js hosted on cloudflare pages
+- **Backend**: Flask hosted on pythonanywhere
 - **AI Models**: Whisper for audio transcription, GPT for flashcard generation, and Eleven labs TTS for audio for flashcards
-
---- 
