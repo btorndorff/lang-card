@@ -1,8 +1,7 @@
 export const FlashcardContent = {
-  NATIVE_LANGUAGE: "native_language",
-  LEARNING_LANGUAGE: "learning_language",
-  EXAMPLE_SENTENCE: "example_sentence",
-  HIRIGANA: "hirigana",
+  NATIVE_LANGUAGE: "term_native",
+  LEARNING_LANGUAGE: "term_learning_language",
+  EXAMPLE_SENTENCE: "example_sentence_learning_language",
 } as const;
 
 export type FlashcardContentValue =
@@ -14,19 +13,18 @@ export type FlashcardPrimaryValue =
 
 export type FlashcardSecondaryValue =
   | typeof FlashcardContent.EXAMPLE_SENTENCE
-  | typeof FlashcardContent.HIRIGANA
   | null;
 
 export type FlashcardSide = {
-  primary: Exclude<
-    FlashcardContentValue,
-    typeof FlashcardContent.EXAMPLE_SENTENCE
-  >;
-  secondary: typeof FlashcardContent.EXAMPLE_SENTENCE | null;
+  primary: string;
+  secondary: string | null;
   audio?: string;
 };
 
 export type Flashcard = {
+  term_native: string;
+  term_learning_language: string;
+  example_sentence_learning_language: string;
   front: FlashcardSide;
   back: FlashcardSide;
   active: boolean;

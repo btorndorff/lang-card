@@ -1,7 +1,6 @@
 import { Flashcard as FlashcardType } from "../../constants/Flashcard";
 import { exportFlashcards as exportFlashcardsAPI } from "../../api";
 import FlashcardItem from "./FlashcardItem";
-import Flashcard from "./Flashcard";
 import FlashcardDisplay from "./FlashcardDisplay";
 
 const FlashcardList = ({
@@ -65,13 +64,7 @@ const FlashcardList = ({
         <ul className="space-y-3 w-full flex flex-col items-center">
           {flashcards?.map((flashcard, index) => (
             <FlashcardItem
-              frontPrimary={flashcard.front.primary}
-              frontSecondary={flashcard.front.secondary ?? undefined}
-              frontAudio={flashcard.front.audio}
-              backPrimary={flashcard.back.primary}
-              backSecondary={flashcard.back.secondary ?? undefined}
-              backAudio={flashcard.back.audio}
-              active={flashcard.active}
+              flashcard={flashcard}
               onToggleActive={() => onToggleActive(index)}
               key={index}
             />
