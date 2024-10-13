@@ -15,6 +15,20 @@ const Flashcard = ({
     setIsFlipped(!isFlipped);
   };
 
+  const renderSide = (side: FlashcardType["front"] | FlashcardType["back"]) => (
+    <>
+      <div className="text-center">
+        <p className="text-2xl font-bold">{side.primary}</p>
+        {side.secondary && <p className="mt-2">{side.secondary}</p>}
+      </div>
+      {side.audio && (
+        <div className="absolute top-2 right-2">
+          <AudioButton audioData={side.audio} />
+        </div>
+      )}
+    </>
+  );
+
   return (
     <div
       className="flip-card w-[300px] h-[180px] md:w-[400px] md:h-[240px]"
@@ -22,30 +36,10 @@ const Flashcard = ({
     >
       <div className={`flip-card-inner ${isFlipped ? "flipped" : ""}`}>
         <div className="flip-card-front w-full h-full flex items-center justify-center p-4 border-4 border-secondary-red rounded-md relative">
-          <div className="text-center">
-            <p className="text-2xl font-bold">{flashcard.front.primary}</p>
-            {flashcard.front.secondary && (
-              <p className="mt-2">{flashcard.front.secondary}</p>
-            )}
-          </div>
-          {flashcard.front.audio && (
-            <div className="absolute top-2 right-2">
-              <AudioButton audioData={flashcard.front.audio} />
-            </div>
-          )}
+          {renderSide(flashcard.front)}
         </div>
         <div className="flip-card-back w-full h-full flex items-center justify-center p-4 border-4 border-secondary-red rounded-md relative">
-          <div className="text-center">
-            <p className="text-2xl font-bold">{flashcard.back.primary}</p>
-            {flashcard.back.secondary && (
-              <p className="mt-2">{flashcard.back.secondary}</p>
-            )}
-          </div>
-          {flashcard.back.audio && (
-            <div className="absolute top-2 right-2">
-              <AudioButton audioData={flashcard.back.audio} />
-            </div>
-          )}
+          {renderSide(flashcard.back)}
         </div>
       </div>
     </div>

@@ -5,10 +5,9 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from utils.transcription import transcribe_audio
 from utils.gpt import generate_flashcards
+from models.flashcard import Flashcards
 from utils.tts import add_audio_to_flashcards
-import io
-import time
-import json
+from utils.export import create_anki_export
 
 
 app = Flask(__name__)
@@ -29,13 +28,9 @@ def allowed_file(filename):
 def generate_flashcards_endpoint():
     native_language = request.form.get("nativeLanguage")
     learning_language = request.form.get("learningLanguage")
-    flashcard_format = request.form.get("flashcardFormat")
-    audio_toggle = request.form.get("audioToggle")
 
-    if not all([native_language, learning_language, flashcard_format, audio_toggle]):
+    if not all([native_language, learning_language]):
         return jsonify({"error": "Missing form data"}), 400
-
-    audio_toggle = audio_toggle == "true"
 
     if "audio_file" in request.files:
         audio_file = request.files["audio_file"]
@@ -56,10 +51,7 @@ def generate_flashcards_endpoint():
                 return jsonify({"error": "Transcription failed"}), 400
 
             flashcards = generate_flashcards(
-                native_language,
-                learning_language,
-                flashcard_format,
-                transcription,
+                native_language, learning_language, transcription, is_audio_input=True
             )
         except Exception as e:
             logger.error(f"An error occurred: {str(e)}")
@@ -69,91 +61,49 @@ def generate_flashcards_endpoint():
                 os.remove(audio_path)
     else:
         input_text = request.form.get("inputText")
-
         if not input_text:
             return jsonify({"error": "No input text provided"}), 400
 
         try:
             flashcards = generate_flashcards(
-                native_language,
-                learning_language,
-                flashcard_format,
-                input_text,
+                native_language, learning_language, input_text
             )
         except Exception as e:
             logger.error(f"An error occurred: {str(e)}")
             return jsonify({"error": str(e)}), 500
 
-    if audio_toggle:
-        flashcard_format_dict = json.loads(flashcard_format)
-        flashcards = add_audio_to_flashcards(
-            flashcards, learning_language, flashcard_format_dict
-        )
-    return jsonify(flashcards), 200
+    return jsonify(flashcards.dict()), 200
+
+
+@app.route("/add_audio_to_flashcards", methods=["POST"])
+def add_audio_to_flashcards_endpoint():
+    flashcards_data = request.json.get("flashcards")
+    learning_language = request.json.get("learningLanguage")
+
+    if not flashcards_data or not learning_language:
+        return jsonify({"error": "Missing required data"}), 400
+
+    try:
+        flashcards = Flashcards(**{"flashcards": flashcards_data})
+        flashcards_with_audio = add_audio_to_flashcards(flashcards, learning_language)
+        return jsonify(flashcards_with_audio.dict()), 200
+    except Exception as e:
+        logger.error(f"An error occurred: {str(e)}")
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/export_anki", methods=["POST"])
 def export_anki():
-    flashcards = request.json.get("flashcards")
+    flashcards_data = request.json.get("flashcards")
 
-    if flashcards:
-        # active_flashcards = [fc for fc in flashcards if fc.get("active")]
-
-        formatted_flashcards = []
-        for fc in flashcards:
-            front_primary = fc["front"].get("primary")
-            front_secondary = fc["front"].get("secondary")
-            front_audio = fc["front"].get("audio")
-            front_content_parts = []
-            if front_primary:
-                front_content_parts.append(
-                    f"<span style='font-size: 1.5em; font-weight: bold;'>{front_primary}</span>"
-                )
-            if front_secondary:
-                front_content_parts.append(f"<br><br>{front_secondary}")
-            if front_audio:
-                front_content_parts.append(
-                    f"<br><button onclick=\"document.getElementById('audio_{fc['front']['primary']}_front').play()\">Play Audio</button>"
-                    f"<audio id='audio_{fc['front']['primary']}_front' autoplay><source src='data:audio/mp3;base64,{front_audio}' type='audio/mp3'></audio>"
-                )
-            if front_content_parts:
-                front_content = f"<div style='text-align:center;'>{''.join(front_content_parts)}</div>"
-            else:
-                continue
-
-            back_primary = fc["back"].get("primary")
-            back_secondary = fc["back"].get("secondary")
-            back_audio = fc["back"].get("audio")
-            back_content_parts = []
-
-            if back_primary:
-                back_content_parts.append(
-                    f"<span style='font-size: 1.5em; font-weight: bold;'>{back_primary}</span>"
-                )
-            if back_secondary:
-                back_content_parts.append(f"<br><br>{back_secondary}")
-            if back_audio:
-                back_content_parts.append(
-                    f"<br><button onclick=\"document.getElementById('audio_{fc['front']['primary']}').play()\">Play Audio</button>"
-                    f"<audio id='audio_{fc['front']['primary']}'><source src='data:audio/mp3;base64,{back_audio}' type='audio/mp3'></audio>"
-                )
-            if back_content_parts:
-                back_content = f"<div style='text-align:center;'>{''.join(back_content_parts)}</div>"
-            else:
-                continue
-
-            formatted_flashcards.append(f"{front_content}|{back_content}")
-
-        export_content = "\n".join(formatted_flashcards)
-
-        memory_file = io.BytesIO()
-        memory_file.write(export_content.encode("utf-8"))
-        memory_file.seek(0)
+    if flashcards_data:
+        memory_file, filename = create_anki_export(flashcards_data)
+        logger.info(f"Exporting Anki file with filename: {filename}")
 
         return send_file(
             memory_file,
             as_attachment=True,
-            download_name=f"flashcards_{int(time.time())}.txt",
+            download_name=filename,
             mimetype="text/plain",
         )
 
