@@ -104,10 +104,8 @@ export function FlashcardFormatModal({
         <div className="p-4 bg-white rounded-lg shadow-md cursor-pointer hover:bg-gray-100 transition-colors duration-200 flex items-center">
           <Settings className="h-6 w-6 mr-4" />
           <div>
-            <h2 className="text-xl font-semibold mb-2">Format Flashcards</h2>
-            <p className="text-md text-muted-foreground">
-              Customize your flashcards
-            </p>
+            <h2 className="text-lg font-semibold">Format Flashcards</h2>
+            <p className="text-sm text-gray-600">Customize your flashcards</p>
           </div>
         </div>
       </DialogTrigger>

@@ -1,12 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { FlashcardForm } from "@/components/home/FlashcardForm/FlashcardForm";
 import { FlashcardsView } from "@/components/home/FlashcardView/FlashcardView";
-import { toast } from "@/hooks/use-toast";
-import { Flashcard } from "@/app/constants/Flashcard";
-import { API_URL } from "@/app/constants/API";
-import { languages } from "@/app/constants/Languages";
 import useGenerateFlashcards from "@/hooks/useGenerateFlashcards";
 
 export default function Home() {
@@ -28,7 +23,7 @@ export default function Home() {
   } = useGenerateFlashcards();
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 h-screen">
+    <div className="flex flex-col items-center justify-center p-4 h-screen bg-white">
       {flashcards.length > 0 ? (
         <FlashcardsView
           flashcards={flashcards}

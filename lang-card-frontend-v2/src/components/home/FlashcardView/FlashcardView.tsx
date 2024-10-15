@@ -2,13 +2,13 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 import { Flashcard, FlashcardFormat } from "@/app/constants/Flashcard";
-import useExportFlashcards from "@/hooks/useExportFlashcards";
 import { useAddAudio } from "@/hooks/useAddAudio";
 import { FlashcardsPreview } from "./FlashcardsPreview/FlashcardsPreview";
 import { FlashcardList } from "./FlashcardList/FlashcardList";
 import { Share, RefreshCw } from "lucide-react";
 import { FlashcardFormatModal } from "./FlashcardFormatModal";
 import { AddAudioModal } from "./AddAudioModal";
+import { ExportModal } from "./ExportModal";
 
 export function FlashcardsView({
   flashcards,
@@ -21,8 +21,8 @@ export function FlashcardsView({
 }) {
   const [isFormatModalOpen, setIsFormatModalOpen] = useState(false);
   const [isAudioModalOpen, setIsAudioModalOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [audioAdded, setAudioAdded] = useState(false);
-  const handleExport = useExportFlashcards();
   const { isAddingAudio, handleAddAudio } = useAddAudio();
   const [flashcardFormat, setFlashcardFormat] = useState<FlashcardFormat>({
     front: ["term_learning_language"],
@@ -43,16 +43,7 @@ export function FlashcardsView({
   };
 
   const handleExportClick = () => {
-    handleExport(activeFlashcards);
-  };
-
-  const handleAddAudioWithState = async (
-    flashcards: Flashcard[],
-    language: string,
-    setFlashcards: React.Dispatch<React.SetStateAction<Flashcard[]>>
-  ) => {
-    await handleAddAudio(flashcards, language, setFlashcards);
-    setAudioAdded(true);
+    setIsExportModalOpen(true);
   };
 
   return (
@@ -78,7 +69,7 @@ export function FlashcardsView({
               isOpen={isAudioModalOpen}
               setIsOpen={setIsAudioModalOpen}
               isAddingAudio={isAddingAudio}
-              handleAddAudio={handleAddAudioWithState}
+              handleAddAudio={handleAddAudio}
               activeFlashcards={activeFlashcards}
               learningLanguage={learningLanguage}
               setFlashcards={setFlashcards}
@@ -117,6 +108,12 @@ export function FlashcardsView({
           <span>Export</span>
         </Button>
       </div>
+      <ExportModal
+        isOpen={isExportModalOpen}
+        setIsOpen={setIsExportModalOpen}
+        flashcards={activeFlashcards}
+        flashcardFormat={flashcardFormat}
+      />
     </div>
   );
 }

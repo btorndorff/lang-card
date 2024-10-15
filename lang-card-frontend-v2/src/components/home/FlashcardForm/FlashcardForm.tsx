@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import LanguageSelector from "./LanguageSelector";
 import UserInputSection from "./UserInputSection";
+import { Loader2, Hammer } from "lucide-react";
 
 export function FlashcardForm({
   nativeLanguage,
@@ -75,7 +76,7 @@ export function FlashcardForm({
             />
             <Button
               type="submit"
-              className="w-full"
+              className="w-full flex items-center justify-center gap-2"
               disabled={
                 isLoading ||
                 !nativeLanguage ||
@@ -85,7 +86,17 @@ export function FlashcardForm({
                 (inputType === "audio" && !audioFile)
               }
             >
-              {isLoading ? "Generating..." : "Generate Flashcards"}
+              {isLoading ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Generating...</span>
+                </>
+              ) : (
+                <>
+                  <Hammer className="h-4 w-4" />
+                  <span>Generate Flashcards</span>
+                </>
+              )}
             </Button>
           </form>
         </CardContent>

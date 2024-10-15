@@ -38,30 +38,33 @@ export function Flashcard({
 
   const renderSide = (side: "front" | "back") => {
     const content = getContent(side);
-    const audio =
-      side === "front" ? flashcard.term_audio : flashcard.sentence_audio;
+    const termAudio = flashcard.term_audio;
+    const sentenceAudio = flashcard.sentence_audio;
 
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center p-4 relative">
+      <div className="w-full h-full flex flex-col items-center justify-center p-4">
         <div className="text-center">
           {content.map((item, index) => (
-            <p
-              key={index}
-              className={
-                index === 0
-                  ? "text-xl sm:text-2xl md:text-3xl font-bold mb-2"
-                  : "text-sm sm:text-base md:text-lg"
-              }
-            >
-              {item}
-            </p>
+            <div key={index} className="flex items-center justify-center mb-2">
+              <p
+                className={
+                  index === 0
+                    ? "text-xl sm:text-2xl md:text-3xl font-bold"
+                    : "text-sm sm:text-base md:text-lg"
+                }
+              >
+                {item}
+              </p>
+              {index === 0 && termAudio && item !== flashcard.term_native && (
+                <AudioButton audioData={termAudio} className="ml-2" />
+              )}
+              {item === flashcard.example_sentence_learning_language &&
+                sentenceAudio && (
+                  <AudioButton audioData={sentenceAudio} className="ml-2" />
+                )}
+            </div>
           ))}
         </div>
-        {audio && (
-          <div className="absolute top-4 right-4">
-            <AudioButton audioData={audio} />
-          </div>
-        )}
       </div>
     );
   };

@@ -83,6 +83,9 @@ export function AddAudioModal({
             Add audio pronunciations to your flashcards.
           </DialogDescription>
         </DialogHeader>
+        <div>
+          <p className="text-sm">*Audio cannot be exported to Quizlet.</p>
+        </div>
         <Button
           onClick={handleAddAudioClick}
           disabled={isAddingAudio || audioAdded}
@@ -95,7 +98,7 @@ export function AddAudioModal({
           ) : audioAdded ? (
             "Audio Added"
           ) : (
-            "Start Adding Audio"
+            "Add Audio"
           )}
         </Button>
       </DialogContent>

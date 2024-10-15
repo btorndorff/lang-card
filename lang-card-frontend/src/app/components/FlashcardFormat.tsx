@@ -54,7 +54,7 @@ const FlashcardFormat = ({
 }: {
   nativeLanguage: string;
   learningLanguage?: SupportedLanguagesType;
-  setFlashcardFormat: (format: Flashcard) => void;
+  setFlashcardFormat: (format: typeof FlashcardFormat) => void;
   setAudioToggle: (on: boolean) => void;
 }) => {
   const [front, setFront] = useState<FlashcardSide>({

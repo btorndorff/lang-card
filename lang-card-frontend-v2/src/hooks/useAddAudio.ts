@@ -34,7 +34,6 @@ export function useAddAudio() {
 
       if (response.ok) {
         const updatedFlashcards = await response.json();
-        console.log("Received updated flashcards:", updatedFlashcards);
         setFlashcards(updatedFlashcards.flashcards);
         toast({
           title: "Success",

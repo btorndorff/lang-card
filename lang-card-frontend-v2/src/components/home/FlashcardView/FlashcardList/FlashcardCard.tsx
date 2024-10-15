@@ -54,14 +54,24 @@ export function FlashcardCard({
                   >
                     {content}
                   </h2>
-                  {index === 0 && flashcard.term_audio && (
-                    <AudioButton
-                      audioData={flashcard.term_audio}
-                      color="white"
-                      size={22}
-                      className="flex items-center justify-center w-8 h-8 bg-secondary-blue rounded-full ml-2"
-                    />
-                  )}
+                  {content === flashcard.term_learning_language &&
+                    flashcard.term_audio && (
+                      <AudioButton
+                        audioData={flashcard.term_audio}
+                        color="white"
+                        size={22}
+                        className="ml-2"
+                      />
+                    )}
+                  {content === flashcard.example_sentence_learning_language &&
+                    flashcard.sentence_audio && (
+                      <AudioButton
+                        audioData={flashcard.sentence_audio}
+                        color="white"
+                        size={18}
+                        className="ml-2"
+                      />
+                    )}
                 </div>
               ))}
             </div>
@@ -76,18 +86,27 @@ export function FlashcardCard({
                   className={
                     index === 0
                       ? "text-xl font-semibold text-center"
-                      : "text-md text-muted-foreground text-center"
+                      : "text-sm sm:text-base md:text-lg text-muted-foreground text-center"
                   }
                 >
                   {content}
                 </p>
-                {index === getContent(format.back).length - 1 &&
+                {content === flashcard.term_learning_language &&
+                  flashcard.term_audio && (
+                    <AudioButton
+                      audioData={flashcard.term_audio}
+                      color={index === 0 ? "black" : "hsl(0 0% 45.1%)"}
+                      size={18}
+                      className="ml-2"
+                    />
+                  )}
+                {content === flashcard.example_sentence_learning_language &&
                   flashcard.sentence_audio && (
                     <AudioButton
                       audioData={flashcard.sentence_audio}
                       color="hsl(0 0% 45.1%)"
                       size={18}
-                      className="flex items-center justify-center w-7 h-7 rounded-full ml-2"
+                      className="ml-2"
                     />
                   )}
               </div>
