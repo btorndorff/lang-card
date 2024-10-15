@@ -68,9 +68,11 @@ function AnkiExportContent({ handleExport }: { handleExport: () => void }) {
       <TabsContent value="instructions">
         <div className="flex flex-col space-y-4">
           <ol className="list-decimal list-inside space-y-2">
-            <li>Click "Export to Anki" below to download the .apkg file</li>
+            <li>
+              Click &quot;Export to Anki&quot; below to download the .apkg file
+            </li>
             <li>Open Anki on your computer</li>
-            <li>In Anki, click "File" &gt; "Import"</li>
+            <li>In Anki, click &quot;File&quot; &gt; &quot;Import&quot;</li>
             <li>Select the downloaded .apkg file</li>
             <li>Your flashcards will be added as a new deck in Anki</li>
           </ol>
@@ -115,13 +117,13 @@ function QuizletExportContent({ handleExport }: { handleExport: () => void }) {
       <TabsContent value="instructions">
         <div className="flex flex-col space-y-4">
           <ol className="list-decimal list-inside space-y-2">
-            <li>Click "Copy Flashcards" below</li>
-            <li>Click "Go to Quizlet" to open the import page</li>
-            <li>Paste the copied content into Quizlet's import box</li>
+            <li>Click &quot;Copy Flashcards&quot; below</li>
+            <li>Click &quot;Go to Quizlet&quot; to open the import page</li>
+            <li>Paste the copied content into Quizlet&apos;s import box</li>
             <li>
               Set delimiters: Comma (Term/Definition), New Line (Between Cards)
             </li>
-            <li>Click "Import" on Quizlet to create your set</li>
+            <li>Click &quot;Import&quot; on Quizlet to create your set</li>
           </ol>
         </div>
       </TabsContent>

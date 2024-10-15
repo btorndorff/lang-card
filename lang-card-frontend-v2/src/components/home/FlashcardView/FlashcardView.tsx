@@ -47,7 +47,7 @@ export function FlashcardsView({
   };
 
   return (
-    <div className="flex flex-col items-center p-4 w-full h-full overflow-hidden">
+    <div className="flex flex-col items-center p-4 w-full h-full md:overflow-hidden">
       <Image
         src="/lang_card_logo.svg"
         alt="LangCard Logo"
@@ -77,7 +77,7 @@ export function FlashcardsView({
             />
           </div>
         </div>
-        <div className="flex flex-col w-full md:w-2/3 h-[500px]">
+        <div className="flex flex-col w-full md:w-2/3 md:h-[500px]">
           <div className="flex-grow overflow-y-auto">
             <FlashcardList
               flashcards={flashcards}
@@ -87,7 +87,7 @@ export function FlashcardsView({
           </div>
         </div>
       </div>
-      <div className="flex justify-center mt-auto pt-4 space-x-4">
+      <div className="flex justify-center mt-auto pt-4 pb-4 space-x-4">
         <Button
           onClick={() => {
             setFlashcards([]);
