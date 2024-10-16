@@ -12,18 +12,8 @@ Lang Card is a language learning tool that generates custom flashcards from eith
 
 ---
 
-
-### Video Demo
-
-    ![Demo]([https://res.cloudinary.com/demo/image/upload/sample.jpg](https://res.cloudinary.com/dcdfuucla/video/upload/v1729017632/dev-portfolio/gcakh74cpc80xtmarmhc.mov))
-
-
-
-
----
-
 ### Tech Stack
 
 - **Frontend**: Next.js hosted on cloudflare pages
 - **Backend**: Flask hosted on pythonanywhere
-- **AI Models**: Whisper for audio transcription, GPT for flashcard generation, and Eleven labs TTS for audio for flashcards
+- **AI Models**: Whisper for audio transcription, GPT for flashcard generation, and Eleven labs TTS or Google TTS for audio for flashcards
