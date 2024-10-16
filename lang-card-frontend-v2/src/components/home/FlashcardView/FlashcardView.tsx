@@ -47,7 +47,7 @@ export function FlashcardsView({
   };
 
   return (
-    <div className="flex flex-col items-center p-4 w-full h-full md:overflow-hidden">
+    <div className="flex flex-col items-center p-4 w-full h-full">
       <Image
         src="/lang_card_logo.svg"
         alt="LangCard Logo"

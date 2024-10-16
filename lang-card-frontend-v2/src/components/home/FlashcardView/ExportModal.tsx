@@ -121,7 +121,7 @@ function QuizletExportContent({ handleExport }: { handleExport: () => void }) {
             <li>Click &quot;Go to Quizlet&quot; to open the import page</li>
             <li>Paste the copied content into Quizlet&apos;s import box</li>
             <li>
-              Set delimiters: Comma (Term/Definition), New Line (Between Cards)
+              Set delimiters: Comma (Term/Definition), Semicolon (Between Cards)
             </li>
             <li>Click &quot;Import&quot; on Quizlet to create your set</li>
           </ol>
